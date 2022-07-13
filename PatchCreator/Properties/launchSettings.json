@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "PatchCreator": {
+      "commandName": "Project",
+      "commandLineArgs": "-D"
+    }
+  }
+}
