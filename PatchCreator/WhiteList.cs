@@ -35,8 +35,6 @@ namespace PatchCreator
         public void DefaultWLFiles()
         {
             AddWhiteListElement("PatchCreator.exe");
-            AddWhiteListElement("PatchCreatorDebug.cmd");
-            AddWhiteListElement("PatchCreator.pdb");
         }
 
         private void SetFileExists()

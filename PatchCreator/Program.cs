@@ -80,9 +80,9 @@ namespace PatchCreator
         static void Setter()
         {
             Console.WriteLine("\nStep 4: HashSetter");
-            for(int i = 0; i < files.Count; i++)
+            foreach(var file in files)
             {
-                string filename = files[i] as string;
+                string filename = file as string;
                 string hash = GetHashSumFile(filename);
                 dick.Add(filename, hash);
                 if (isDebug)
