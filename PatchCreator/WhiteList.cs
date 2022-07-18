@@ -10,10 +10,9 @@ namespace PatchCreator
 {
     internal class WhiteList
     {
-        public static WhiteListFile[] whitelistJsonInfo;
+        public static WhiteListFile[] WhitelistJsonInfo;
         private ArrayList whitelist;
-        public static List<WhiteList> WhitelistList = new List<WhiteList>();
-        public string jsonFileName;
+        public string JsonFileName;
         private bool isFileExists;
 
         public class WhiteListFile
@@ -23,12 +22,12 @@ namespace PatchCreator
 
         public WhiteList(string filename)
         {
-            this.jsonFileName = $"{Program.directory}\\{filename}";
+            this.JsonFileName = $"{Program.directory}\\{filename}";
             whitelist = new ArrayList();
             SetFileExists();
             if (!isFileExists)
                 DeleteJsonFile();
-            this.AddWhiteListElement(jsonFileName);
+            this.AddWhiteListElement(JsonFileName);
             DefaultWLFiles();
         }
 
@@ -39,7 +38,7 @@ namespace PatchCreator
 
         private void SetFileExists()
         {
-            if (File.Exists(jsonFileName))
+            if (File.Exists(JsonFileName))
                 isFileExists = true;
             else
                 isFileExists = false;
@@ -47,28 +46,28 @@ namespace PatchCreator
 
         private void DeleteJsonFile()
         {
-            File.Delete(jsonFileName);
+            File.Delete(JsonFileName);
             isFileExists = false;
         }
 
         private void SaveData()
         {
-            File.WriteAllText(jsonFileName, JsonSerializer.Serialize(whitelistJsonInfo));
+            File.WriteAllText(JsonFileName, JsonSerializer.Serialize(WhitelistJsonInfo));
         }
 
         public void AddWhiteListElement(string filename)
         {
-            filename = filename.Replace(Program.directory + "\\", "").Replace("\u0022", "");
+            filename = Program.GetFormatedPath(filename).Replace("\u0022", "");
             whitelist.Add(filename);
         }
 
         public void ConvertAllWLE()
         {
-            whitelistJsonInfo = new WhiteListFile[whitelist.Count];
+            WhitelistJsonInfo = new WhiteListFile[whitelist.Count];
             int i = 0;
             foreach (string file in whitelist)
             {
-                whitelistJsonInfo[i] = new WhiteListFile { Path = file };
+                WhitelistJsonInfo[i] = new WhiteListFile { Path = file };
                 if (Program.IsDebug)
                     Console.WriteLine($"WhiteList File Added: {file}");
                 i++;
@@ -78,9 +77,9 @@ namespace PatchCreator
 
         public static bool IsContains(String filename)
         {
-            foreach(WhiteListFile whitelist in whitelistJsonInfo)
+            foreach(WhiteListFile whitelist in WhitelistJsonInfo)
             {
-                string f_filename = filename.Replace(Program.directory + "\\", "");
+                string f_filename = Program.GetFormatedPath(filename);
                 if(whitelist.Path.Equals(f_filename))
                     return true;
             }

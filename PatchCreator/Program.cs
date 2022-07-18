@@ -20,6 +20,11 @@ namespace PatchCreator
             EndApp(false);
         }
 
+        public static string GetFormatedPath(string path)
+        {
+            return path.Replace(directory + "\\", "");
+        }
+
         static void Start(string[] args)
         {
             Console.WriteLine("Patch Creator / by Hypocrite07\n");
@@ -41,13 +46,14 @@ namespace PatchCreator
             Console.WriteLine($"Current directory is: \"{directory}\"\n");
             Console.WriteLine("Enter product version(x.x.x): ");
             var version = Console.ReadLine();
+            if (version == null)
+                version = "1.0.0";
             Console.WriteLine("\nStep 2: Init Json's File");
-            wl = new WhiteList("patcher-whitelist");
+            wl = new WhiteList("patch-whitelist");
             json = new JsonInfo("patch-info", version);
-            Console.WriteLine("\nStep 2.1: Enter Path of WhiteList files(write \"0\" for exit):");
+            Console.WriteLine("\nStep 2.1: Enter Path of WhiteList files/dirs(write \"0\" for exit):");
             while(true)
             {
-
                 var word = Console.ReadLine();
                 if (word.StartsWith("0"))
                     break;
@@ -64,9 +70,11 @@ namespace PatchCreator
 
             foreach (string _dir in directories)
             {
+                if (WhiteList.IsContains(GetFormatedPath(_dir)))
+                    continue;
                 if (isDebug)
                     Console.WriteLine($"dir added {_dir}");
-                SetterDirsAndFiles(_dir);
+                    SetterDirsAndFiles(_dir);
             }
             var _files = Directory.GetFiles(path);
             foreach (string _file in _files)
@@ -83,7 +91,7 @@ namespace PatchCreator
             foreach(var file in files)
             {
                 string filename = file as string;
-                string hash = GetHashSumFile(filename);
+                string hash = Get256HashSumFile(filename);
                 dick.Add(filename, hash);
                 if (isDebug)
                     Console.WriteLine($"\"{filename}\" hash is \"{hash}\"");
@@ -91,14 +99,14 @@ namespace PatchCreator
             json.JsonPaster(dick);
         }
 
-        static string GetHashSumFile(string filename)
+        static string Get256HashSumFile(string filename)
         {
+            if (filename == null) return null;
             FileStream fs = File.OpenRead(filename);
-            MD5 md5 = new MD5CryptoServiceProvider();
             byte[] fileData = new byte[fs.Length];
             fs.Read(fileData, 0, (int)fs.Length);
-            byte[] checkSumm = md5.ComputeHash(fileData);
-            return BitConverter.ToString(checkSumm).Replace("-", String.Empty);
+            fs.Close();
+            return Convert.ToHexString(SHA256.Create().ComputeHash(fileData)).ToLower();
         }
 
         static void EndApp(bool sure)

@@ -14,7 +14,25 @@
 	  <!-- Это чтобы ускорить запуск -->
 	  <PublishReadyToRun>true</PublishReadyToRun>
 	  <!-- Эти две строки, чтобы уменьшить размер бинарника -->
-	  <PublishTrimmed>true</PublishTrimmed>
 	  <TrimMode>link</TrimMode>
+	  <StartupObject>PatchCreator.Program</StartupObject>
+	  <ApplicationIcon>hash-icon-20.ico</ApplicationIcon>
+	  <PackageIcon>hash-icon-20.png</PackageIcon>
+	  <Authors>Hypocrite07/Medieval Dawn Team</Authors>
+	  <Version>1.2-rc</Version>
+	  <Copyright>Medieval Dawn Team</Copyright>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="hash-icon-20.ico" />
+  </ItemGroup>
+
 </Project>

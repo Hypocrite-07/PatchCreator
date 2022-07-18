@@ -63,7 +63,7 @@ namespace PatchCreator
             {
                 if (Program.IsDebug)
                     Console.WriteLine($"Key: {pair.Key} / Value: {pair.Value}");
-                var formated_path = pair.Key.Replace(Program.directory + "\\", "");
+                var formated_path = Program.GetFormatedPath(pair.Key);
                 if (WhiteList.IsContains(formated_path))
                 {
                     if (Program.IsDebug)
